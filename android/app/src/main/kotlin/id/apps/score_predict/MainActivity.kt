@@ -1,4 +1,4 @@
-package id.apps.score_predict
+package com.goalguess.predictor
 
 import io.flutter.embedding.android.FlutterActivity
 
