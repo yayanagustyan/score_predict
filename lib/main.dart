@@ -83,9 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
   var home = "---";
   var homeL = "---";
   var homes = "0";
+  var homeI = "-";
   var away = "---";
   var awayL = "---";
   var aways = "0";
+  var awayI = "-";
 
   bool isClub = true;
   String idx = "0";
@@ -196,9 +198,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _logo(home.substring(0, 1)),
+                  _logo(homeI),
                   Image.asset('assets/images/banner.png', width: 200),
-                  _logo(away.substring(0, 1)),
+                  _logo(awayI),
                 ],
               ),
             ),
@@ -382,12 +384,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           if (idx == "0") {
                             home = clubs[value]['name']!;
                             homeL = clubs[value].entries.last.value;
+                            homeI = clubs[value]['initial']!;
                             imgHome = clubs[value]['logo']!;
                             colorHome = clubs[value]['color']!;
                           }
                           if (idx == "3") {
                             away = clubs[value]['name']!;
                             awayL = clubs[value].entries.last.value;
+                            awayI = clubs[value]['initial']!;
                             imgAway = clubs[value]['logo']!;
                             colorAway = clubs[value]['color']!;
                           }
@@ -410,196 +414,211 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: itemsScore(),
                     ),
             ),
-            InkWell(
-              onTap: () {
-                cancelTimer();
-                var win = home;
-                var lose = away;
-                var winS = homes;
-                var loseS = aways;
-                if (int.parse(homes) < int.parse(aways)) {
-                  win = awayL;
-                  lose = homeL;
-                  winS = aways;
-                  loseS = homes;
-                }
+            // Use Builder to get the widget context
+            Builder(
+              builder: (BuildContext context) {
+                return InkWell(
+                  onTap: () {
+                    cancelTimer();
+                    var win = home;
+                    var lose = away;
+                    var winS = homes;
+                    var loseS = aways;
+                    if (int.parse(homes) < int.parse(aways)) {
+                      win = awayL;
+                      lose = homeL;
+                      winS = aways;
+                      loseS = homes;
+                    }
 
-                setState(() {
-                  winInfo =
-                      "I predict $win will win againts $lose $winS - $loseS at full-time";
-                  winInfoDesc = "Predict football scores with US";
-                });
+                    setState(() {
+                      winInfo =
+                          "I predict $win will win againts $lose $winS - $loseS at full-time";
+                      winInfoDesc = "Predict football scores with US";
+                    });
 
-                scController
-                    .captureFromWidget(
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        color: Colors.black,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _logo(home.substring(0, 1)),
-                            Image.asset('assets/images/banner.png', width: 200),
-                            _logo(away.substring(0, 1)),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.black,
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 3,
-                            color: Colors.white,
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                "FULL TIME",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    scController
+                        .captureFromWidget(
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: Container(
-                              decoration:
-                                  const BoxDecoration(color: Colors.red),
-                              height: 100,
-                              child: Center(
+                          Container(
+                            color: Colors.black,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                _logo(homeI),
+                                Image.asset('assets/images/banner.png',
+                                    width: 200),
+                                _logo(awayI),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.black,
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width / 3,
+                                color: Colors.white,
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
                                   child: Text(
-                                home,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 24,
-                                ),
-                              )),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              color: Colors.black,
-                              height: 50,
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      height: 50,
-                                      width: 50,
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        homes,
-                                        style: const TextStyle(
-                                          fontSize: 32,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
+                                    "FULL TIME",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: Colors.black,
                                     ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(bottom: 20),
-                                      child: Text(
-                                        "_",
-                                        style: TextStyle(
-                                          fontSize: 28,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 50,
-                                      width: 50,
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        aways,
-                                        style: const TextStyle(
-                                          fontSize: 32,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              decoration:
-                                  const BoxDecoration(color: Colors.blue),
-                              height: 100,
-                              child: Center(
-                                child: Text(
-                                  away,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 24,
                                   ),
                                 ),
                               ),
                             ),
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration:
+                                      const BoxDecoration(color: Colors.red),
+                                  height: 100,
+                                  child: Center(
+                                      child: Text(
+                                    home,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                    ),
+                                  )),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  color: Colors.black,
+                                  height: 50,
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          height: 50,
+                                          width: 50,
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            homes,
+                                            style: const TextStyle(
+                                              fontSize: 32,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.only(bottom: 20),
+                                          child: Text(
+                                            "_",
+                                            style: TextStyle(
+                                              fontSize: 28,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 50,
+                                          width: 50,
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            aways,
+                                            style: const TextStyle(
+                                              fontSize: 32,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  decoration:
+                                      const BoxDecoration(color: Colors.blue),
+                                  height: 100,
+                                  child: Center(
+                                    child: Text(
+                                      away,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Text(winInfo),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Text(winInfoDesc),
+                          ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Text(winInfo),
+                    )
+                        .then((image) async {
+                      final directory =
+                          await getApplicationDocumentsDirectory();
+                      final imagePath =
+                          await File('${directory.absolute.path}/image.png')
+                              .create();
+                      await imagePath.writeAsBytes(image);
+
+                      /// Share Plugin
+                      // await FlutterShare.shareFile(
+                      //   title: "title nya",
+                      //   filePath: imagePath.path,
+                      // );
+
+                      // _onShare method:
+                      // ignore: use_build_context_synchronously
+                      final box = context.findRenderObject() as RenderBox?;
+
+                      XFile img = XFile(imagePath.path);
+                      List<XFile> files = [img];
+                      await Share.shareXFiles(
+                        files,
+                        sharePositionOrigin:
+                            box!.localToGlobal(Offset.zero) & box.size,
+                      );
+                    });
+                  },
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xffe52d27), Color(0xffb31217)],
+                        stops: [0, 1],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5),
-                        child: Text(winInfoDesc),
-                      ),
-                    ],
+                    ),
+                    alignment: Alignment.center,
+                    height: 50,
+                    width: double.infinity,
+                    child: const Text("SEND"),
                   ),
-                )
-                    .then((image) async {
-                  final directory = await getExternalStorageDirectory();
-                  final imagePath =
-                      await File('${directory!.absolute.path}/image.png')
-                          .create();
-                  await imagePath.writeAsBytes(image);
-
-                  /// Share Plugin
-                  // await FlutterShare.shareFile(
-                  //   title: "title nya",
-                  //   filePath: imagePath.path,
-                  // );
-
-                  XFile img = XFile(imagePath.path);
-                  List<XFile> files = [img];
-                  Share.shareXFiles(files);
-                });
+                );
               },
-              child: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xffe52d27), Color(0xffb31217)],
-                    stops: [0, 1],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                alignment: Alignment.center,
-                height: 50,
-                width: double.infinity,
-                child: const Text("SEND"),
-              ),
-            ),
+            )
           ],
         ),
       ),
@@ -609,7 +628,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _logo(String letter) {
     return Container(
       height: 90,
-      width: 80,
+      width: 78,
       padding: const EdgeInsets.all(30),
       decoration: const BoxDecoration(
         image: DecorationImage(
